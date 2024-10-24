@@ -1,5 +1,3 @@
----
-
 # Instalação do Mosquitto no Raspberry Pi e Configuração de Certificado SSL
 
 ## Parte 1: Instalando o Mosquitto no Raspberry Pi
