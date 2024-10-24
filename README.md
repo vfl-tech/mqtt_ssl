@@ -1,5 +1,3 @@
-Aqui está o arquivo `.md` com o passo a passo solicitado para instalação do Mosquitto no Raspberry Pi e a criação de certificados SSL usando OpenSSL:
-
 ---
 
 # Instalação do Mosquitto no Raspberry Pi e Configuração de Certificado SSL
@@ -101,6 +99,132 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 - **`-CAcreateserial`**: Cria um número de série para o certificado.
 - **`-out server.crt`**: Define o nome do arquivo de saída do certificado do servidor.
 - **`-days 360`**: Define a validade do certificado para 1 ano.
+
+---
+
+Aqui está um passo a passo para a instalação e uso básico do **TShark**, a versão de linha de comando do **Wireshark**, que é usado para capturar e analisar pacotes de rede.
+
+---
+
+# Instalação e Uso do TShark
+
+## 1. Instalando o TShark
+
+### 1.1. Atualizar pacotes e repositórios
+Primeiro, atualize os repositórios e pacotes no sistema para garantir que o software mais recente seja instalado:
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### 1.2. Instalar o TShark
+No Raspberry Pi (ou qualquer sistema baseado em Linux), instale o TShark com o seguinte comando:
+```bash
+sudo apt install tshark -y
+```
+
+Se solicitado, permita que o grupo de usuários sem privilégios execute capturas de pacotes:
+```bash
+sudo dpkg-reconfigure wireshark-common
+```
+Escolha "Yes" quando perguntado.
+
+### 1.3. Adicionar o usuário ao grupo `wireshark` (opcional)
+Para permitir que o seu usuário execute o TShark sem precisar de permissões de superusuário, adicione o usuário ao grupo `wireshark`:
+```bash
+sudo usermod -aG wireshark $USER
+```
+Após isso, reinicie ou faça logout e login novamente para que as mudanças tenham efeito.
+
+---
+
+## 2. Usando o TShark
+
+### 2.1. Verificar as interfaces de rede
+Antes de iniciar a captura de pacotes, é importante verificar quais interfaces de rede estão disponíveis no sistema:
+```bash
+tshark -D
+```
+Isso listará as interfaces de rede disponíveis (ex: `1. eth0`, `2. wlan0`). Use o número da interface desejada para capturar os pacotes.
+
+### 2.2. Capturando pacotes de rede
+Para capturar pacotes em uma interface específica, use o seguinte comando:
+```bash
+sudo tshark -i 1
+```
+- **`-i 1`**: Especifica a interface (neste caso, a interface `1`, como `eth0`). Ajuste o número de acordo com a interface que deseja capturar.
+- O TShark começará a capturar e exibir os pacotes diretamente na linha de comando.
+
+### 2.3. Salvar captura em um arquivo
+Para salvar a captura de pacotes em um arquivo para análise posterior:
+```bash
+sudo tshark -i 1 -w captura.pcap
+```
+- **`-w captura.pcap`**: Especifica o arquivo de saída (formato `.pcap`).
+
+### 2.4. Ler um arquivo de captura
+Se você já tem um arquivo `.pcap` salvo e quer analisá-lo:
+```bash
+tshark -r captura.pcap
+```
+- **`-r captura.pcap`**: Lê o arquivo de captura e exibe o conteúdo.
+
+### 2.5. Filtros básicos no TShark
+Você pode aplicar filtros ao capturar pacotes ou analisar arquivos de captura:
+
+- **Captura somente pacotes HTTP:**
+  ```bash
+  sudo tshark -i 1 -f "tcp port 80"
+  ```
+  O filtro **`tcp port 80`** captura pacotes que usam a porta 80 (HTTP).
+
+- **Captura somente pacotes de um IP específico:**
+  ```bash
+  sudo tshark -i 1 -f "host 192.168.1.100"
+  ```
+
+- **Exibir apenas pacotes com um filtro Wireshark:**
+  Se você já tiver um arquivo `.pcap`, use filtros para exibir somente o que é relevante. Por exemplo, para exibir somente pacotes MQTT:
+  ```bash
+  tshark -r captura.pcap -Y mqtt
+  ```
+
+### 2.6. Exportar informações de pacotes para um arquivo de texto
+Se você deseja exportar os dados da captura para um arquivo legível:
+```bash
+tshark -r captura.pcap > captura.txt
+```
+Isso exporta os detalhes da captura para um arquivo de texto.
+
+---
+
+## 3. Analisando Pacotes Específicos
+
+### 3.1. Filtrar pacotes por protocolo
+Você pode usar filtros para focar em pacotes de protocolos específicos, como MQTT, HTTP, TCP, UDP, etc.
+
+- **Mostrar somente pacotes MQTT:**
+  ```bash
+  tshark -r captura.pcap -Y mqtt
+  ```
+
+- **Mostrar somente pacotes TCP:**
+  ```bash
+  tshark -r captura.pcap -Y tcp
+  ```
+
+### 3.2. Detalhamento de pacotes específicos
+Se você quiser ver os detalhes de um pacote específico, use o número da linha (ex: pacote número `5`):
+```bash
+tshark -r captura.pcap -Y mqtt -V -c 5
+```
+- **`-V`**: Mostra todos os detalhes do pacote.
+- **`-c 5`**: Mostra o pacote de número 5.
+
+---
+
+## 4. Considerações Finais
+
+O TShark é uma ferramenta poderosa para capturar e analisar pacotes de rede diretamente pela linha de comando. Este guia cobre os fundamentos de instalação, captura e análise de pacotes. Para ambientes mais complexos, você pode integrar o TShark com outras ferramentas para uma análise de rede robusta.
 
 ---
 
