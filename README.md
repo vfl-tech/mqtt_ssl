@@ -100,7 +100,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 
 ---
 
-Aqui está um passo a passo para a instalação e uso básico do **TShark**, a versão de linha de comando do **Wireshark**, que é usado para capturar e analisar pacotes de rede.
+
 
 ---
 
