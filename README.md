@@ -1,5 +1,4 @@
 ---
-
 # Instalação do Mosquitto no Raspberry Pi e Configuração de Certificado SSL
 
 ## Parte 1: Instalando o Mosquitto no Raspberry Pi
@@ -101,7 +100,6 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 - **`-days 360`**: Define a validade do certificado para 1 ano.
 
 ---
-
 ### Considerações Finais
 Agora você possui um servidor Mosquitto configurado no Raspberry Pi e um conjunto de certificados SSL para garantir uma comunicação segura usando MQTT. Esses certificados podem ser usados no arquivo de configuração do Mosquitto para habilitar SSL/TLS.
 
